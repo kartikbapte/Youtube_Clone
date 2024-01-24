@@ -1,5 +1,5 @@
-import { Provider } from "react-redux";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// import { Provider } from "react-redux";
+import { createBrowserRouter, Form, RouterProvider } from "react-router-dom";
 import "./App.css";
 import Body from "./components/Body";
 import Demo from "./components/Demo";
@@ -7,7 +7,10 @@ import Demo2 from "./components/Demo2";
 import Head from "./components/Head";
 import MainContainer from "./components/MainContainer";
 import WatchPage from "./components/WatchPage";
-import store from "./utils/store";
+// import store from "./utils/store";
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAuth, clearUser} from "./utils/authSlice"
+import GoogleLogin from './components/GoogleLogin';
 
 const appRouter = createBrowserRouter([
   {
@@ -36,11 +39,14 @@ const appRouter = createBrowserRouter([
 ]);
 
 function App() {
+ 
+
   return (
-    <Provider store={store}>
+    // <Provider store={store}>
       <div>
         <Head />
         <RouterProvider router={appRouter} />
+      
 
         {/**
          *
@@ -56,7 +62,7 @@ function App() {
          *
          */}
       </div>
-    </Provider>
+    // {/* </Provider> */}
   );
 }
 
