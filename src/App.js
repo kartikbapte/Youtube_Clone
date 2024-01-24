@@ -8,9 +8,9 @@ import Head from "./components/Head";
 import MainContainer from "./components/MainContainer";
 import WatchPage from "./components/WatchPage";
 // import store from "./utils/store";
-import { useSelector, useDispatch } from 'react-redux';
-import { selectAuth, clearUser} from "./utils/authSlice"
-import GoogleLogin from './components/GoogleLogin';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { selectAuth, clearUser} from "./utils/authSlice"
+// import GoogleLogin from './components/GoogleLogin';
 
 const appRouter = createBrowserRouter([
   {
