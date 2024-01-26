@@ -3,20 +3,81 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API_1,YOUTUBE_SEARCH_API_2 } from "../utils/contants";
 
+
 import { cacheResults } from "../utils/searchSlice";
 
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, provider } from "./firebase";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+  
 
 
+import {  selectUserName,
+  selectUserPhoto,
+  setUserLoginDetails,
+  setSignOutState} from "../utils/authSlice";
 
 const Head = () => {
+ 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const dispatch = useDispatch();
+  const userName = useSelector(selectUserName);
+  const userPhoto = useSelector(selectUserPhoto);
+  let location = useLocation();
+  const navigate = useNavigate();
+  ;
+
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        console.log("authchange",user);
+        setUser(user);
+
+        if (location.pathname === "/login") {
+          navigate("/");
+        }
+      }
+    });
+  }, [userName]);  
+
+  const handleAuth = () => {
+    console.log("handleAuth",userName);
+    if (!userName) {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          setUser(result.user);
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    } else if (userName) {
+      signOut(auth)
+        .then(() => {
+          dispatch(setSignOutState());
+          navigate("/");
+        })
+        .catch((err) => alert(err.message));
+    }
+  };
+
+  const setUser = (user) => {
+    console.log("user",user);
+    dispatch(
+      setUserLoginDetails({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      })
+    );
+  };
 
 
 
   const searchCache = useSelector((store) => store.search);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   /**
    *  searchCache = {
@@ -111,12 +172,11 @@ const Head = () => {
         )}
       </div>
       <div className="col-span-1">
-        <img
-        
-          className="h-8"
-        
-          alt="user"
-          src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
+        <img 
+        onClick={() => handleAuth()}
+        className="h-8 cursor-pointer"
+  
+        src={userPhoto} alt={userName}
         />
  
       </div>

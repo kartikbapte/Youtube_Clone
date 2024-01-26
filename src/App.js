@@ -1,5 +1,7 @@
 // import { Provider } from "react-redux";
-import { createBrowserRouter, Form, RouterProvider } from "react-router-dom";
+import { createBrowserRouter,BrowserRouter, Form, RouterProvider } from "react-router-dom";
+
+
 import "./App.css";
 import Body from "./components/Body";
 import Demo from "./components/Demo";
@@ -44,9 +46,13 @@ function App() {
   return (
     // <Provider store={store}>
       <div>
+        {/* <Head /> */}
+        <BrowserRouter  >
         <Head />
-        <RouterProvider router={appRouter} />
-      
+        </BrowserRouter >
+        <RouterProvider router={appRouter}>
+          
+        </RouterProvider>
 
         {/**
          *
@@ -60,9 +66,10 @@ function App() {
          *      VideoCard
          *
          *
+         * 
          */}
       </div>
-    // {/* </Provider> */}
+    //  {/* </Provider>  */}
   );
 }
 
